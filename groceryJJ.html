@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grocery List</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      background: #076585;  
+      background: -webkit-linear-gradient(to right, #fff, #076585);  /* I'm using "UIGradients" for gradient background */
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      margin-top: 50px;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .form-control {
+      border-radius: 20px;
+    }
+
+    .btn-primary {
+      border-radius: 20px;
+    }
+
+    .btn-danger {
+      margin-left: 10px;
+    }
+
+    .list-group-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #e9ecef;
+      margin-bottom: 5px;
+      border-radius: 4px;
+      padding: 10px 15px;
+      transition: all 0.3s ease;
+    }
+
+    .list-group-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    #emptyMessage {
+      text-align: center;
+      color: gray;
+      font-style: italic;
+      display: none;
+    }
+
+    .clear-btn {
+      display: block;
+      margin: 20px auto 0;
+      width: 100%;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Enhanced Grocery List</h1>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" id="itemInput" placeholder="Enter item">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button" onclick="addItem()">Add</button>
+      </div>
+    </div>
+    <p id="emptyMessage">Your grocery list is empty. Start adding items!</p>
+    <ul class="list-group" id="groceryList">
+      <!-- Items will be dynamically added here -->
+    </ul>
+    <button class="btn btn-danger clear-btn" onclick="clearList()">Clear All Items</button>
+  </div>
+  
+  <!-- Bootstrap JS and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <script>
+    //Function to add item to the list
+    function addItem() {
+      var itemInput = document.getElementById("itemInput");
+      var itemName = itemInput.value.trim();
+      
+      if (itemName !== "") {
+        var listItem = document.createElement("li");
+        listItem.className = "list-group-item";
+        listItem.textContent = itemName;
+        
+        var deleteButton = document.createElement("button");
+        deleteButton.className = "btn btn-danger btn-sm";
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = function() {
+          listItem.remove();
+          checkEmptyMessage();
+        };
+        
+        //Add strike-through on click
+        listItem.onclick = function() {
+          listItem.classList.toggle("completed");
+        };
+  
+        listItem.appendChild(deleteButton);
+        document.getElementById("groceryList").appendChild(listItem);
+        
+        itemInput.value = ""; // Clear input field after adding item
+        checkEmptyMessage();
+      }
+    }
+  
+    // Function to clear all items
+    function clearList() {
+      var groceryList = document.getElementById("groceryList");
+      groceryList.innerHTML = "";
+      checkEmptyMessage();
+    }
+  
+    //Function to check and display empty message
+    function checkEmptyMessage() {
+      var groceryList = document.getElementById("groceryList");
+      var emptyMessage = document.getElementById("emptyMessage");
+      
+      if (groceryList.children.length === 0) {
+        emptyMessage.style.display = "block";
+      } else {
+        emptyMessage.style.display = "none";
+      }
+    }
+    
+    // Initialize empty message visibility
+    checkEmptyMessage();
+  </script>
+
+</body>
+</html>
